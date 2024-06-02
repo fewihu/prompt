@@ -15,6 +15,7 @@ var (
 	cyan = colorCode('3', '7')
 	//
 	green = colorCode('2', '8')
+	black = colorCode('2', '3', '3')
 )
 
 func colorCode(code ...byte) string {
@@ -40,4 +41,8 @@ func Cyan(text string) ColoredText {
 
 func Green(text string) ColoredText {
 	return &coloredText{text, green}
+}
+
+func Black(text string) ColoredText {
+	return &coloredText{text, black}
 }

@@ -17,5 +17,17 @@ func NotOk() FormattedText {
 }
 
 func Branch(color func(string) ColoredText) FormattedText {
-	return color("⎇")
+	return color(" ⎇ ")
+}
+
+func SpecialRef(color func(string) ColoredText) FormattedText {
+	return color(" ⚒ ")
+}
+
+func Pen(color func(string) ColoredText) FormattedText {
+	return color(" 🖉 ")
+}
+
+func Cabinet(color func(string) ColoredText) FormattedText {
+	return color(" 🗄 ")
 }

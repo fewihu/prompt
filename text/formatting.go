@@ -1,5 +1,7 @@
 package text
 
+import "strings"
+
 //  	set bold mode.
 // ESC[2m 	ESC[22m 	set dim/faint mode.
 // ESC[3m 	ESC[23m 	set italic mode.
@@ -17,6 +19,18 @@ type formattedText struct {
 
 func (f *formattedText) Get() string {
 	return f.formatCode + f.text + f.resetCode
+}
+
+func Join(del string, texts ...FormattedText) FormattedText {
+	var sb strings.Builder
+	for _, t := range texts {
+		sb.WriteString(t.Get() + del)
+	}
+	return &formattedText{
+		formatCode: "",
+		text:       sb.String(),
+		resetCode:  "",
+	}
 }
 
 func Bold(text string) FormattedText {
