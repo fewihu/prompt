@@ -12,9 +12,15 @@ import (
 )
 
 func main() {
-	ret := exit.FormattExitCode(exitCode())
-	user := username.GetUser()
-	dir := pwd.FormatPwd()
+	returnCodeCh := make(chan string)
+	go exitCode(returnCodeCh)
+	formattedReturnCodeCh := make(chan text.FormattedText)
+	go exit.FormatExitCode(<-returnCodeCh, formattedReturnCodeCh)
+
+	userCh := make(chan text.FormattedText)
+	go username.GetUser(userCh)
+	pwdCh := make(chan text.FormattedText)
+	go pwd.FormatPwd(pwdCh)
 
 	pwdRawCh := make(chan *string)
 	go pwd.GetPwd(pwdRawCh)
@@ -22,16 +28,17 @@ func main() {
 	gitState := make(chan text.FormattedText)
 	go git.GetStateOrBranch(pwdRawCh, gitState)
 
-	fmt.Print(ret.Get() + " ")
-	fmt.Print(user.Get())
-	fmt.Print(":" + dir.Get())
+	fmt.Print((<-formattedReturnCodeCh).Get() + " ")
+	fmt.Print((<-userCh).Get())
+	fmt.Print(":" + (<-pwdCh).Get())
 	fmt.Print("\n" + (<-gitState).Get() + "\n")
 }
 
-func exitCode() string {
+func exitCode(ch chan<- string) {
 	args := os.Args
 	if len(args) > 1 {
-		return args[1]
+		ch <- args[1]
+		return
 	}
-	return "?"
+	ch <- "?"
 }

@@ -9,9 +9,19 @@ const (
 	ok = 0
 )
 
-func FormattExitCode(code string) text.FormattedText {
+func FormatExitCode(code string, ch chan<- text.FormattedText) {
 	if code != "0" {
-		return text.BoldColor(text.Red(code))
+		ch <- text.BoldColor(text.Red(code))
+		return
 	}
-	return text.Ok()
+	ch <- text.Ok()
+
 }
+
+
+
+
+
+
+
+

@@ -7,13 +7,14 @@ import (
 )
 
 // GetPwd returns the username
-func GetUser() text.FormattedText {
+func GetUser(ch chan<- text.FormattedText) {
 	currentUser, err := user.Current()
 	if err != nil {
-		return getDefault()
+		ch <- getDefault()
+		return
 	}
 	username := currentUser.Username
-	return text.BoldColor(text.Blue(username))
+	ch <- text.BoldColor(text.Blue(username))
 }
 
 func getDefault() text.FormattedText {

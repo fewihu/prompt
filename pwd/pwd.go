@@ -9,20 +9,22 @@ import (
 )
 
 // FormatPwd returns the normalized path of the current directory or a default value
-func FormatPwd() text.FormattedText {
+func FormatPwd(ch chan<- text.FormattedText) {
 	pwd, err := os.Getwd()
 	if err != nil {
-		return getDefault()
+		ch <- getDefault()
+		return
 	}
 
 	currentUser, err := user.Current()
 	if err != nil {
-		return getDefault()
+		ch <- getDefault()
+		return
 	}
 	username := currentUser.Username
 
 	pwd = strings.Replace(pwd, "/home/"+username, "~", -1)
-	return text.BoldColor(text.Cyan(pwd))
+	ch <- text.BoldColor(text.Cyan(pwd))
 }
 
 // GetPwd return the pwd or nil
