@@ -50,9 +50,8 @@ func GetStateOrBranch(pathCh <-chan *string, state chan<- text.FormattedText) {
 	commit := <-commitCh
 
 	if specialState != nil {
-		state <- text.Join("  ",
-			text.SpecialRef(text.Red),
-			text.Join("",
+		state <- text.JoinSpace(text.SpecialRef(text.Red),
+			text.JoinNarrow(
 				text.Red("["),
 				text.BoldColor(text.Red(*specialState)),
 				text.Red("]"),
@@ -70,11 +69,11 @@ func GetStateOrBranch(pathCh <-chan *string, state chan<- text.FormattedText) {
 	diff := <-diffCh
 
 	if branch != nil {
-		state <- text.Join(" ",
+		state <- text.JoinSpace(
 			text.Branch(text.Green),
 			text.BoldColor(text.Green(*branch)),
 			diff,
-			text.Normal("\n"))
+			text.Newline())
 		return
 	}
 	state <- text.Normal("")
@@ -135,7 +134,7 @@ func getRef(path string, ref chan<- *string) {
 
 func getDiff(path string, diff chan<- text.FormattedText) {
 
-	diffState := text.Join("", text.Green("["))
+	diffState := text.JoinNarrow(text.Green("["))
 
 	news := make(chan int)
 	modified := make(chan int)
@@ -155,7 +154,7 @@ func getDiff(path string, diff chan<- text.FormattedText) {
 	formatInformation(text.Pen(text.Green), <-modified, &diffState)
 	formatInformation(text.Check(text.Green), <-added, &diffState)
 	formatInformation(text.Cabinet(text.Green), <-stashed, &diffState)
-	diffState = text.Join(" ", diffState, text.Green("]"))
+	diffState = text.JoinSpace(diffState, text.Green("]"))
 	diff <- diffState
 }
 
@@ -195,6 +194,6 @@ func getNumberStashes(path string, ch chan<- int) {
 
 func formatInformation(sym text.FormattedText, num int, state *text.FormattedText) {
 	if num > 0 {
-		*state = text.Join("", *state, text.Green(" "), sym, text.BoldColor(text.Green(strconv.Itoa(num))))
+		*state = text.JoinNarrow(*state, text.Green(" "), sym, text.BoldColor(text.Green(strconv.Itoa(num))))
 	}
 }

@@ -1,6 +1,8 @@
 package text
 
-import "strings"
+import (
+	"strings"
+)
 
 //  	set bold mode.
 // ESC[2m 	ESC[22m 	set dim/faint mode.
@@ -21,7 +23,15 @@ func (f *formattedText) Get() string {
 	return f.formatCode + f.text + f.resetCode
 }
 
-func Join(del string, texts ...FormattedText) FormattedText {
+func JoinSpace(texts ...FormattedText) FormattedText {
+	return join(" ", texts...)
+}
+
+func JoinNarrow(texts ...FormattedText) FormattedText {
+	return join("", texts...)
+}
+
+func join(del string, texts ...FormattedText) FormattedText {
 	var sb strings.Builder
 	for _, t := range texts {
 		sb.WriteString(t.Get() + del)
