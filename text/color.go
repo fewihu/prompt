@@ -1,6 +1,14 @@
 // Package text allow to set formatting and colors on text
 package text
 
+const (
+	Esc byte = 27
+)
+
+type ColoredText interface {
+	String() string
+}
+
 type coloredText struct {
 	text      string
 	colorCode string
@@ -23,7 +31,7 @@ func colorCode(code ...byte) string {
 	return string(append(append(sequence, code...), 'm'))
 }
 
-func (t *coloredText) Get() string {
+func (t *coloredText) String() string {
 	return t.colorCode + t.text
 }
 

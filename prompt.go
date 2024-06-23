@@ -28,10 +28,14 @@ func main() {
 	gitState := make(chan text.FormattedText)
 	go git.GetStateOrBranch(pwdRawCh, gitState)
 
-	fmt.Print((<-formattedReturnCodeCh).Get() + " ")
-	fmt.Print((<-userCh).Get())
-	fmt.Print(":" + (<-pwdCh).Get())
-	fmt.Print("\n" + (<-gitState).Get() + "\n")
+	fmt.Print(<-formattedReturnCodeCh)
+	fmt.Print(" ")
+	fmt.Print(<-userCh)
+	fmt.Print(":")
+	fmt.Print(<-pwdCh)
+	fmt.Print("\n")
+	fmt.Print(<-gitState)
+	fmt.Print("\n")
 }
 
 func exitCode(ch chan<- string) {

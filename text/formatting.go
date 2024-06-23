@@ -13,13 +13,17 @@ import (
 // ESC[8m 	ESC[28m 	set hidden/invisible mode
 // ESC[9m 	ESC[29m 	set strikethrough mode.
 
+type FormattedText interface {
+	String() string
+}
+
 type formattedText struct {
 	formatCode string
 	text       string
 	resetCode  string
 }
 
-func (f *formattedText) Get() string {
+func (f *formattedText) String() string {
 	return f.formatCode + f.text + f.resetCode
 }
 
@@ -34,7 +38,7 @@ func JoinNarrow(texts ...FormattedText) FormattedText {
 func join(del string, texts ...FormattedText) FormattedText {
 	var sb strings.Builder
 	for _, t := range texts {
-		sb.WriteString(t.Get() + del)
+		sb.WriteString(t.String() + del)
 	}
 	return &formattedText{
 		formatCode: "",
@@ -57,7 +61,7 @@ func BoldColor(text ColoredText) FormattedText {
 	bold := []byte{Esc, '[', '1', 'm'}
 	// ESC[22m
 	end := []byte{Esc, '[', '0', 'm'}
-	return &formattedText{string(bold), text.Get(), string(end)}
+	return &formattedText{string(bold), text.String(), string(end)}
 }
 
 func Normal(text string) FormattedText {
