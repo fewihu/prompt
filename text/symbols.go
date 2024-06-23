@@ -31,3 +31,7 @@ func Pen(color func(string) ColoredText) FormattedText {
 func Cabinet(color func(string) ColoredText) FormattedText {
 	return color(" 🗄 ")
 }
+
+func Undef() FormattedText {
+	return Normal("<?>")
+}

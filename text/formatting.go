@@ -64,3 +64,7 @@ func Normal(text string) FormattedText {
 	end := []byte{Esc, '[', '0', 'm'}
 	return &formattedText{string(end), text, ""}
 }
+
+func Newline() FormattedText {
+	return Normal("\n")
+}

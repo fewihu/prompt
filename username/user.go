@@ -18,5 +18,5 @@ func GetUser(ch chan<- text.FormattedText) {
 }
 
 func getDefault() text.FormattedText {
-	return text.Normal("<?>")
+	return text.Undef()
 }

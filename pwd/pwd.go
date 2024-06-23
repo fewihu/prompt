@@ -38,5 +38,5 @@ func GetPwd(pwdCh chan<- *string) {
 }
 
 func getDefault() text.FormattedText {
-	return text.Normal("<?>")
+	return text.Undef()
 }
