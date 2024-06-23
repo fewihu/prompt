@@ -15,15 +15,12 @@ type coloredText struct {
 }
 
 var (
-	// 196
-	red = colorCode('1', '9', '6')
-	// 26
-	blue = colorCode('2', '6')
-	// 50
-	cyan = colorCode('3', '7')
-	//
-	green = colorCode('2', '8')
-	black = colorCode('2', '3', '3')
+	red     = colorCode('1', '9', '6')
+	blue    = colorCode('2', '6')
+	cyan    = colorCode('3', '7')
+	green   = colorCode('2', '8')
+	black   = colorCode('2', '3', '3')
+	violett = colorCode('6', '9')
 )
 
 func colorCode(code ...byte) string {
@@ -53,4 +50,8 @@ func Green(text string) ColoredText {
 
 func Black(text string) ColoredText {
 	return &coloredText{text, black}
+}
+
+func Violett(text string) ColoredText {
+	return &coloredText{text, violett}
 }

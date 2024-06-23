@@ -35,3 +35,7 @@ func Cabinet(color func(string) ColoredText) FormattedText {
 func Undef() FormattedText {
 	return Normal("<?>")
 }
+
+func Whale(color func(string) ColoredText) FormattedText {
+	return color("🐳")
+}

@@ -6,6 +6,7 @@ import (
 	"os"
 	"prompt/exit"
 	"prompt/git"
+	"prompt/kube"
 	"prompt/pwd"
 	"prompt/text"
 	"prompt/username"
@@ -28,6 +29,9 @@ func main() {
 	gitState := make(chan text.FormattedText)
 	go git.GetStateOrBranch(pwdRawCh, gitState)
 
+	kubeStateCh := make(chan *text.FormattedText)
+	go kube.GetKubeState(kubeStateCh)
+
 	fmt.Print(<-formattedReturnCodeCh)
 	fmt.Print(" ")
 	fmt.Print(<-userCh)
@@ -35,7 +39,14 @@ func main() {
 	fmt.Print(<-pwdCh)
 	fmt.Print("\n")
 	fmt.Print(<-gitState)
-	fmt.Print("\n")
+
+	kubeState := <-kubeStateCh
+	if kubeState != nil {
+		fmt.Print(*kubeState)
+		fmt.Print("\n")
+		fmt.Print("\n")
+		fmt.Print("\n")
+	}
 }
 
 func exitCode(ch chan<- string) {
